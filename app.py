@@ -12,8 +12,12 @@ st.set_page_config(
     layout="centered"
 )
 
+# ---------------- HEADER ----------------
 st.title("🧬 Clinical Resume Analyzer")
-st.write("Upload your resume, analyze skill gaps, and improve it using AI.")
+st.write(
+    "Analyze your clinical resume, identify skill gaps, "
+    "and generate an AI-enhanced version."
+)
 
 # ---------------- SESSION STATE ----------------
 if "resume_text" not in st.session_state:
@@ -22,9 +26,15 @@ if "resume_text" not in st.session_state:
 if "improved_text" not in st.session_state:
     st.session_state.improved_text = None
 
-# ---------------- FILE UPLOAD ----------------
+if "demo_unlocked" not in st.session_state:
+    st.session_state.demo_unlocked = False
+
+# ---------------- STEP 1: FILE UPLOAD ----------------
+st.markdown("### Step 1️⃣: Upload Your Resume")
+st.caption("PDF format only. Your file is not stored.")
+
 uploaded_file = st.file_uploader(
-    "📄 Upload your resume (PDF only)",
+    "📄 Upload resume (PDF)",
     type=["pdf"]
 )
 
@@ -32,7 +42,9 @@ if uploaded_file:
     st.session_state.resume_text = extract_text_from_pdf(uploaded_file)
     st.success("Resume uploaded and parsed successfully.")
 
-# ---------------- ROLE SELECTION ----------------
+# ---------------- STEP 2: ROLE SELECTION ----------------
+st.markdown("### Step 2️⃣: Choose Target Role")
+
 role_map = {
     "Clinical Data Associate (CDA)": "cda",
     "Clinical Research Associate (CRA)": "cra",
@@ -40,7 +52,7 @@ role_map = {
 }
 
 role_label = st.selectbox(
-    "🎯 Select target role",
+    "🎯 Select the role you are applying for",
     options=list(role_map.keys())
 )
 
@@ -75,18 +87,29 @@ if st.session_state.resume_text:
         else:
             st.success("No missing skills detected!")
 
-    # ---------------- AI IMPROVEMENT ----------------
+    # ---------------- STEP 3: AI IMPROVEMENT (DEMO MODE) ----------------
     st.markdown("---")
-    st.subheader("🤖 AI Resume Improvement")
+    st.markdown("### Step 3️⃣: AI Resume Improvement")
 
-    if st.button("✨ Generate Improved Resume"):
-        with st.spinner("Improving resume using AI..."):
-            st.session_state.improved_text = improve_resume(
-                resume_text=st.session_state.resume_text,
-                missing_skills=missing,
-                role=role_label
-            )
-        st.success("AI-generated resume ready!")
+    if not st.session_state.demo_unlocked:
+        st.info(
+            "🔒 **Demo mode**: AI resume improvement is locked.\n\n"
+            "Unlock to generate an AI-enhanced resume."
+        )
+
+        if st.button("🔓 Unlock AI Resume Improvement"):
+            st.session_state.demo_unlocked = True
+            st.rerun()
+
+    else:
+        if st.button("✨ Generate Improved Resume"):
+            with st.spinner("Improving resume using AI..."):
+                st.session_state.improved_text = improve_resume(
+                    resume_text=st.session_state.resume_text,
+                    missing_skills=missing,
+                    role=role_label
+                )
+            st.success("AI-generated resume ready!")
 
 # ---------------- OUTPUT SECTION ----------------
 if st.session_state.improved_text:
@@ -96,10 +119,10 @@ if st.session_state.improved_text:
     st.text_area(
         label="",
         value=st.session_state.improved_text,
-        height=300
+        height=320
     )
 
-    # ---------------- DOWNLOADS ----------------
+    # ---------------- DOWNLOAD OPTIONS ----------------
     st.markdown("### ⬇️ Download Options")
 
     docx_file = generate_docx(st.session_state.improved_text)
@@ -122,3 +145,9 @@ if st.session_state.improved_text:
             file_name="improved_resume.pdf",
             mime="application/pdf"
         )
+
+# ---------------- FOOTER ----------------
+st.markdown("---")
+st.caption(
+    "Built by Abhishek Singh • Streamlit • OpenAI • Clinical AI Project"
+)
