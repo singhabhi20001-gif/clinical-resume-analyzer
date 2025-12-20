@@ -92,13 +92,18 @@ if st.session_state.resume_text:
     st.markdown("### Step 3️⃣: AI Resume Improvement")
 
     if not st.session_state.demo_unlocked:
-        st.info(
-            "💳 **Upgrade required** to generate an AI-enhanced resume.\n\n"
-            "The paid version is launching soon. "
-            "Join the waitlist to get early access and launch discounts."
+        _ = st.info(
+            "💳 **AI Resume Improvement (Premium Feature)**\n\n"
+            "Our AI enhances your resume for the selected clinical role by:\n"
+            "• Highlighting relevant clinical skills\n"
+            "• Improving clarity and structure\n"
+            "• Making the resume more ATS-friendly\n"
+            "• Naturally incorporating missing skills (without inventing experience)\n\n"
+            "🚀 The paid version is launching soon.\n"
+            "Join the waitlist to get early access and special launch pricing."
         )
 
-        # 🔴 REPLACE THIS LINK WITH YOUR REAL GOOGLE FORM LINK
+        # 🔴 REPLACE THIS WITH YOUR REAL GOOGLE FORM LINK
         st.markdown(
             "[👉 Join the waitlist](https://docs.google.com/forms/d/e/1FAIpQLSeQCAtMVQo_nzBqFQRTIl_ev_7jlZ9ENrWuXL2Tm3tYAZL2Wg/viewform?usp=dialog)"
         )
