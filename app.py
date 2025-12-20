@@ -87,17 +87,25 @@ if st.session_state.resume_text:
         else:
             st.success("No missing skills detected!")
 
-    # ---------------- STEP 3: AI IMPROVEMENT (DEMO MODE) ----------------
+    # ---------------- STEP 3: AI IMPROVEMENT (FAKE PAYWALL) ----------------
     st.markdown("---")
     st.markdown("### Step 3️⃣: AI Resume Improvement")
 
     if not st.session_state.demo_unlocked:
         st.info(
-            "🔒 **Demo mode**: AI resume improvement is locked.\n\n"
-            "Unlock to generate an AI-enhanced resume."
+            "💳 **Upgrade required** to generate an AI-enhanced resume.\n\n"
+            "The paid version is launching soon. "
+            "Join the waitlist to get early access and launch discounts."
         )
 
-        if st.button("🔓 Unlock AI Resume Improvement"):
+        # 🔴 REPLACE THIS LINK WITH YOUR REAL GOOGLE FORM LINK
+        st.markdown(
+            "[👉 Join the waitlist](https://docs.google.com/forms/d/e/1FAIpQLSeQCAtMVQo_nzBqFQRTIl_ev_7jlZ9ENrWuXL2Tm3tYAZL2Wg/viewform?usp=dialog)"
+        )
+
+        st.caption("🎁 Free demo available: Try AI improvement once.")
+
+        if st.button("🎁 Try Free Demo"):
             st.session_state.demo_unlocked = True
             st.rerun()
 
