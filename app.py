@@ -6,6 +6,9 @@ from ai_helper import improve_resume
 from docx_helper import generate_docx
 from pdf_helper import generate_pdf
 
+# ---------------- ADMIN MODE ----------------
+ADMIN_MODE = False  # 🔐 Set True only for local testing
+
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="Clinical Resume Analyzer",
@@ -29,7 +32,7 @@ if "improved_text" not in st.session_state:
 if "demo_unlocked" not in st.session_state:
     st.session_state.demo_unlocked = False
 
-# ---- USAGE TRACKING ----
+# ---- USAGE TRACKING (INTERNAL) ----
 if "waitlist_clicks" not in st.session_state:
     st.session_state.waitlist_clicks = 0
 
@@ -104,12 +107,12 @@ if st.session_state.resume_text:
     if not st.session_state.demo_unlocked:
         _ = st.info(
             "💳 **AI Resume Improvement (Premium Feature)**\n\n"
-            "Our AI enhances your resume for the selected clinical role by:\n\n"
-            "• Highlighting relevant clinical skills\n\n"
-            "• Improving clarity and structure\n\n"
-            "• Making the resume more ATS-friendly\n\n"
+            "Our AI enhances your resume for the selected clinical role by:\n"
+            "• Highlighting relevant clinical skills\n"
+            "• Improving clarity and structure\n"
+            "• Making the resume more ATS-friendly\n"
             "• Naturally incorporating missing skills (without inventing experience)\n\n"
-            "🚀 The paid version is launching soon.\n\n"
+            "🚀 The paid version is launching soon.\n"
             "Join the waitlist to get early access and special launch pricing."
         )
 
@@ -173,12 +176,13 @@ if st.session_state.improved_text:
             mime="application/pdf"
         )
 
-# ---------------- INTERNAL ANALYTICS (SIDEBAR) ----------------
-with st.sidebar:
-    st.markdown("### 📊 Usage (Internal)")
-    st.write("Waitlist clicks:", st.session_state.waitlist_clicks)
-    st.write("Demo unlocks:", st.session_state.demo_clicks)
-    st.write("AI generations:", st.session_state.ai_generations)
+# ---------------- INTERNAL ANALYTICS (ADMIN ONLY) ----------------
+if ADMIN_MODE:
+    with st.sidebar:
+        st.markdown("### 📊 Usage (Internal)")
+        st.write("Waitlist clicks:", st.session_state.waitlist_clicks)
+        st.write("Demo unlocks:", st.session_state.demo_clicks)
+        st.write("AI generations:", st.session_state.ai_generations)
 
 # ---------------- FOOTER ----------------
 st.markdown("---")
